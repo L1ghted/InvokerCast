@@ -3,8 +3,7 @@ from random import sample
 
 
 class Timer:
-    def __init__(self, duration, repeat=False, start=False):
-        self.duration = duration
+    def __init__(self, repeat=False, start=False):
         self.repeat = repeat
         self.active = False
         self.start_time = 0
@@ -23,7 +22,7 @@ class Timer:
             self.activate()
 
     def current_time(self):
-        return self.time // 1000
+        return self.time / 1000
 
     def update(self):
         if self.active:
@@ -33,13 +32,14 @@ class Timer:
 class Main:
     def __init__(self):
         init()
+        self.record = 9999
         self.cast = ['', '', '']
         self.sr1, self.sr2, self.sr3, self.spell, self.last_spell, self.x = None, None, None, None, None, None
         self.window = display.set_mode((1000, 700))
         self.screen = Surface((1000, 700))
         self.cube = Surface((100, 100))
         self.repeat_spell = []
-        self.timer = Timer(duration=1, start=False)
+        self.timer = Timer(start=False)
 
         self.backgrounds = image.load('data/bg1.jpg')
         self.invok = image.load('data/invok.png')
@@ -67,8 +67,7 @@ class Main:
     def rand_spell(self):
         spell_list = [self.sunstrike, self.emp, self.coldsnap, self.blast, self.forge, self.ghostwalk, self.icewall, self.meteor, self.tornado,
                       self.alacrity]
-        self.repeat_spell.extend(sample(spell_list, 6))
-        print(self.repeat_spell)
+        self.repeat_spell.extend(sample(spell_list, 5))
 
     def spells(self):
         if self.cast[0] == 'exort' and self.cast[1] == 'exort' and self.cast[2] == 'exort' and self.spell != self.sunstrike:
@@ -157,21 +156,29 @@ class Main:
             self.window.blit(self.screen, (0, 0))
             draw.rect(self.screen, (0, 0, 0), (0, 0, 1000, 700))
             text = self.get_font(50).render('Нажмите любую клавишу, чтобы начать заново', 1, (0, 255, 0))
-            text2 = self.get_font(50).render(f'Ваш рекорд: {self.timer.current_time()}', 1, (0, 255, 0))
             text_rect = text.get_rect()
-            text_rect.center = (500, 250)
+            text_rect.center = (500, 300)
+            text2 = self.get_font(50).render(f'Ваш счёт: {self.timer.current_time()}', 1, (0, 255, 0))
             text2_rect = text2.get_rect()
-            text2_rect.center = (500, 200)
+            text2_rect.center = (500, 250)
+            self.record = min(self.record, self.timer.current_time())
+            text3 = self.get_font(50).render(f'Ваш рекорд: {self.record}', 1, (0, 255, 0))
+            text3_rect = text2.get_rect()
+            text3_rect.center = (475, 200)
             self.screen.blit(text, text_rect)
             self.screen.blit(text2, text2_rect)
+            self.screen.blit(text3, text3_rect)
             display.update()
             for ev in event.get():
                 if ev.type == QUIT:
                     exit()
                 if ev.type == KEYDOWN:
-                    if ev.key == K_SPACE:
-                        main.run()
+                    main.run()
             display.update()
+
+    def reset(self):
+        self.cast = ['', '', '']
+        self.sr1, self.sr2, self.sr3, self.spell, self.last_spell, self.x = None, None, None, None, None, None
 
     def run(self):
         while True:
@@ -226,6 +233,7 @@ class Main:
 
             for ev in event.get():
                 if ev.type == QUIT:
+                    quit()
                     exit()
                 if ev.type == KEYDOWN:
                     if ev.key == K_q:
@@ -268,20 +276,20 @@ class Main:
                         if len(self.repeat_spell) > 0:
                             if self.x == self.repeat_spell[0]:
                                 self.repeat_spell.remove(self.repeat_spell[0])
-                        else:
-                            self.timer.deactivate()
-                            print(self.timer.current_time())
-                            main.end_screen()
+                            if len(self.repeat_spell) == 0:
+                                self.timer.deactivate()
+                                self.reset()
+                                main.end_screen()
 
                     if ev.key == K_f:
                         self.x = self.last_spell
                         if len(self.repeat_spell) > 0:
                             if self.x == self.repeat_spell[0]:
                                 self.repeat_spell.remove(self.repeat_spell[0])
-                        else:
-                            self.timer.deactivate()
-                            print(self.timer.current_time())
-                            main.end_screen()
+                            if len(self.repeat_spell) == 0:
+                                self.timer.deactivate()
+                                main.end_screen()
+                                self.reset()
 
 
 if __name__ == '__main__':
