@@ -1,4 +1,5 @@
 from pygame import *
+from random import choice
 
 
 class Timer:
@@ -47,6 +48,7 @@ class Main:
         self.window = display.set_mode((1280, 719))
         self.screen = Surface((1280, 719))
         self.cube = Surface((100, 100))
+        self.repeat_spell = []
 
         self.backgrounds = image.load('data/bg1.jpg')
         self.invok = image.load('data/invok.png')
@@ -71,11 +73,10 @@ class Main:
     def get_font(self, size):
         return font.SysFont("freesanbold.ttf", size)
 
-    def set_timer(self):
-        self.timer.activate()
-
-    def sec(self):
-        return self.timer.current_time()
+    def rand_spell(self):
+        spell_list = ['sunstrike', 'emp', 'coldsnap', 'blast', 'forge', 'ghostwalk', 'icewall', 'meteor', 'tornado', 'alacrity']
+        self.repeat_spell.extend([choice(spell_list), choice(spell_list), choice(spell_list), choice(spell_list), choice(spell_list)])
+        print(self.repeat_spell)
 
     def spells(self):
         if self.cast[0] == 'exort' and self.cast[1] == 'exort' and self.cast[2] == 'exort' and self.spell != self.sunstrike:
@@ -218,5 +219,6 @@ class Main:
 
 
 if __name__ == '__main__':
+
     main = Main()
     main.run()
