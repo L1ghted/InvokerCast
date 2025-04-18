@@ -48,7 +48,6 @@ class Main:
         self.screen = Surface((1280, 719))
         self.cube = Surface((100, 100))
 
-
         self.backgrounds = image.load('data/bg1.jpg')
         self.invok = image.load('data/invok.png')
         self.quas = image.load('data/quas.png')
@@ -76,36 +75,28 @@ class Main:
         self.timer.activate()
 
     def sec(self):
-        return self.timer.cu
+        return self.timer.current_time()
 
     def spells(self):
-        if self.cast[0] == 'exort' and self.cast[1] == 'exort' and self.cast[
-            2] == 'exort' and self.spell != self.sunstrike:
+        if self.cast[0] == 'exort' and self.cast[1] == 'exort' and self.cast[2] == 'exort' and self.spell != self.sunstrike:
             return self.sunstrike
         elif self.cast[0] == 'wex' and self.cast[1] == 'wex' and self.cast[2] == 'wex' and self.spell != self.emp:
             return self.emp
-        elif self.cast[0] == 'quas' and self.cast[1] == 'quas' and self.cast[
-            2] == 'quas' and self.spell != self.coldsnap:
+        elif self.cast[0] == 'quas' and self.cast[1] == 'quas' and self.cast[2] == 'quas' and self.spell != self.coldsnap:
             return self.coldsnap
 
-        elif self.cast[0] == 'quas' and self.cast[1] == 'quas' and self.cast[
-            2] == 'wex' and self.spell != self.ghostwalk:
+        elif self.cast[0] == 'quas' and self.cast[1] == 'quas' and self.cast[2] == 'wex' and self.spell != self.ghostwalk:
             return self.ghostwalk
-        elif self.cast[0] == 'wex' and self.cast[1] == 'quas' and self.cast[
-            2] == 'quas' and self.spell != self.ghostwalk:
+        elif self.cast[0] == 'wex' and self.cast[1] == 'quas' and self.cast[2] == 'quas' and self.spell != self.ghostwalk:
             return self.ghostwalk
-        elif self.cast[0] == 'quas' and self.cast[1] == 'wex' and self.cast[
-            2] == 'quas' and self.spell != self.ghostwalk:
+        elif self.cast[0] == 'quas' and self.cast[1] == 'wex' and self.cast[2] == 'quas' and self.spell != self.ghostwalk:
             return self.ghostwalk
 
-        elif self.cast[0] == 'quas' and self.cast[1] == 'quas' and self.cast[
-            2] == 'exort' and self.spell != self.icewall:
+        elif self.cast[0] == 'quas' and self.cast[1] == 'quas' and self.cast[2] == 'exort' and self.spell != self.icewall:
             return self.icewall
-        elif self.cast[0] == 'exort' and self.cast[1] == 'quas' and self.cast[
-            2] == 'quas' and self.spell != self.icewall:
+        elif self.cast[0] == 'exort' and self.cast[1] == 'quas' and self.cast[2] == 'quas' and self.spell != self.icewall:
             return self.icewall
-        elif self.cast[0] == 'quas' and self.cast[1] == 'exort' and self.cast[
-            2] == 'quas' and self.spell != self.icewall:
+        elif self.cast[0] == 'quas' and self.cast[1] == 'exort' and self.cast[2] == 'quas' and self.spell != self.icewall:
             return self.icewall
         elif self.cast[0] == 'wex' and self.cast[1] == 'wex' and self.cast[2] == 'quas' and self.spell != self.tornado:
             return self.tornado
@@ -114,34 +105,25 @@ class Main:
         elif self.cast[0] == 'quas' and self.cast[1] == 'wex' and self.cast[2] == 'wex' and self.spell != self.tornado:
             return self.tornado
 
-        elif self.cast[0] == 'wex' and self.cast[1] == 'wex' and self.cast[
-            2] == 'exort' and self.spell != self.alacrity:
+        elif self.cast[0] == 'wex' and self.cast[1] == 'wex' and self.cast[2] == 'exort' and self.spell != self.alacrity:
             return self.alacrity
-        elif self.cast[0] == 'wex' and self.cast[1] == 'exort' and self.cast[
-            2] == 'wex' and self.spell != self.alacrity:
+        elif self.cast[0] == 'wex' and self.cast[1] == 'exort' and self.cast[2] == 'wex' and self.spell != self.alacrity:
             return self.alacrity
-        elif self.cast[0] == 'exort' and self.cast[1] == 'wex' and self.cast[
-            2] == 'wex' and self.spell != self.alacrity:
+        elif self.cast[0] == 'exort' and self.cast[1] == 'wex' and self.cast[2] == 'wex' and self.spell != self.alacrity:
             return self.alacrity
 
-        elif self.cast[0] == 'exort' and self.cast[1] == 'exort' and self.cast[
-            2] == 'wex' and self.spell != self.meteor:
+        elif self.cast[0] == 'exort' and self.cast[1] == 'exort' and self.cast[2] == 'wex' and self.spell != self.meteor:
             return self.meteor
-        elif self.cast[0] == 'wex' and self.cast[1] == 'exort' and self.cast[
-            2] == 'exort' and self.spell != self.meteor:
+        elif self.cast[0] == 'wex' and self.cast[1] == 'exort' and self.cast[2] == 'exort' and self.spell != self.meteor:
             return self.meteor
-        elif self.cast[0] == 'exort' and self.cast[1] == 'wex' and self.cast[
-            2] == 'exort' and self.spell != self.meteor:
+        elif self.cast[0] == 'exort' and self.cast[1] == 'wex' and self.cast[2] == 'exort' and self.spell != self.meteor:
             return self.meteor
 
-        elif self.cast[0] == 'exort' and self.cast[1] == 'exort' and self.cast[
-            2] == 'quas' and self.spell != self.forge:
+        elif self.cast[0] == 'exort' and self.cast[1] == 'exort' and self.cast[2] == 'quas' and self.spell != self.forge:
             return self.forge
-        elif self.cast[0] == 'quas' and self.cast[1] == 'exort' and self.cast[
-            2] == 'exort' and self.spell != self.forge:
+        elif self.cast[0] == 'quas' and self.cast[1] == 'exort' and self.cast[2] == 'exort' and self.spell != self.forge:
             return self.forge
-        elif self.cast[0] == 'exort' and self.cast[1] == 'quas' and self.cast[
-            2] == 'exort' and self.spell != self.forge:
+        elif self.cast[0] == 'exort' and self.cast[1] == 'quas' and self.cast[2] == 'exort' and self.spell != self.forge:
             return self.forge
 
         elif self.cast[0] == 'quas' and self.cast[1] == 'wex' and self.cast[2] == 'exort' and self.spell != self.blast:
