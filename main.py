@@ -3,16 +3,13 @@ from random import choice
 
 
 class Timer:
-    def __init__(self, duration, repeat=False, autostart=False, end_func=None, on_update=None):
+    def __init__(self, duration, repeat=False, start=False):
         self.duration = duration
         self.repeat = repeat
-        self.autostart = autostart
         self.active = False
         self.start_time = 0
-        self.end_func = end_func
-        self.on_update = on_update
         self.time = 0
-        if autostart:
+        if start:
             self.activate()
 
     def activate(self):
@@ -26,18 +23,11 @@ class Timer:
             self.activate()
 
     def current_time(self):
-        self.time = time.get_ticks() // 1000
         return self.time
 
     def update(self):
         if self.active:
-            if self.on_update:
-                self.on_update()
-            self.time = time.get_ticks()
-            if self.time - self.start_time >= self.duration:
-                if self.end_func:
-                    self.end_func()
-                self.deactivate()
+            self.time = time.get_ticks() - self.start_time
 
 
 class Main:
@@ -49,6 +39,7 @@ class Main:
         self.screen = Surface((1280, 719))
         self.cube = Surface((100, 100))
         self.repeat_spell = []
+        self.timer = Timer(duration=1, start=False)
 
         self.backgrounds = image.load('data/bg1.jpg')
         self.invok = image.load('data/invok.png')
@@ -142,11 +133,10 @@ class Main:
 
     def run(self):
         while True:
-            self.timer = Timer(duration=1000, repeat=True, on_update=None)
-            self.timer.activate()
-            self.timer_text = self.get_font(30).render(f'{self.timer.current_time()}', True, (0, 255, 0))
             self.window.blit(self.screen, (0, 0))
             self.screen.blit(self.backgrounds, (0, 0))
+            self.timer.update()
+            self.timer_text = self.get_font(30).render(f'{self.timer.current_time()}', True, (0, 255, 0))
             self.window.blit(self.timer_text, self.timer_text.get_rect())
             draw.circle(self.screen, (0, 0, 0), (500, 400), 35)  # right
             draw.circle(self.screen, (0, 0, 0), (600, 400), 35)  # mid
@@ -159,6 +149,7 @@ class Main:
 
             if self.x:
                 self.screen.blit(self.x, (450, 200))  # top
+                self.screen.blit(self.cube, (650, 200))
             else:
                 self.screen.blit(self.cube, (450, 200))
                 self.screen.blit(self.cube, (650, 200))
@@ -189,6 +180,8 @@ class Main:
                         self.sr1 = self.sr2
                         self.sr2 = self.sr3
                         self.sr3 = self.quas_r
+                        if not self.timer.active:
+                            self.timer.activate()
 
                     if ev.key == K_w:
                         self.cast[0] = self.cast[1]
@@ -197,6 +190,8 @@ class Main:
                         self.sr1 = self.sr2
                         self.sr2 = self.sr3
                         self.sr3 = self.wex_r
+                        if not self.timer.active:
+                            self.timer.activate()
 
                     if ev.key == K_e:
                         self.cast[0] = self.cast[1]
@@ -205,6 +200,8 @@ class Main:
                         self.sr1 = self.sr2
                         self.sr2 = self.sr3
                         self.sr3 = self.exort_r
+                        if not self.timer.active:
+                            self.timer.activate()
 
                     if ev.key == K_r:
                         sp = self.spells()
@@ -219,6 +216,5 @@ class Main:
 
 
 if __name__ == '__main__':
-
     main = Main()
     main.run()
