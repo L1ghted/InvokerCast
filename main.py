@@ -1,5 +1,5 @@
 from pygame import *
-from random import choice
+from random import sample
 
 
 class Timer:
@@ -67,7 +67,7 @@ class Main:
     def rand_spell(self):
         spell_list = [self.sunstrike, self.emp, self.coldsnap, self.blast, self.forge, self.ghostwalk, self.icewall, self.meteor, self.tornado,
                       self.alacrity]
-        self.repeat_spell.extend([choice(spell_list), choice(spell_list), choice(spell_list), choice(spell_list), choice(spell_list)])
+        self.repeat_spell.extend(sample(spell_list, 5))
         print(self.repeat_spell)
 
     def spells(self):
@@ -233,12 +233,16 @@ class Main:
                         if self.x == self.repeat_spell[0]:
                             if len(self.repeat_spell) > 1:
                                 self.repeat_spell.remove(self.repeat_spell[0])
+                            else:
+                                self.timer.deactivate()
 
                     if ev.key == K_f:
                         self.x = self.last_spell
                         if self.x == self.repeat_spell[0]:
                             if len(self.repeat_spell) > 1:
                                 self.repeat_spell.remove(self.repeat_spell[0])
+                        else:
+                            self.timer.deactivate()
 
 
 if __name__ == '__main__':
