@@ -35,8 +35,8 @@ class Main:
         init()
         self.cast = ['', '', '']
         self.sr1, self.sr2, self.sr3, self.spell, self.last_spell, self.x = None, None, None, None, None, None
-        self.window = display.set_mode((1280, 719))
-        self.screen = Surface((1280, 719))
+        self.window = display.set_mode((1000, 700))
+        self.screen = Surface((1000, 700))
         self.cube = Surface((100, 100))
         self.repeat_spell = []
         self.timer = Timer(duration=1, start=False)
@@ -65,7 +65,8 @@ class Main:
         return font.SysFont("freesanbold.ttf", size)
 
     def rand_spell(self):
-        spell_list = ['sunstrike', 'emp', 'coldsnap', 'blast', 'forge', 'ghostwalk', 'icewall', 'meteor', 'tornado', 'alacrity']
+        spell_list = [self.sunstrike, self.emp, self.coldsnap, self.blast, self.forge, self.ghostwalk, self.icewall, self.meteor, self.tornado,
+                      self.alacrity]
         self.repeat_spell.extend([choice(spell_list), choice(spell_list), choice(spell_list), choice(spell_list), choice(spell_list)])
         print(self.repeat_spell)
 
@@ -131,6 +132,10 @@ class Main:
         elif self.cast[0] == 'wex' and self.cast[1] == 'exort' and self.cast[2] == 'quas' and self.spell != self.blast:
             return self.blast
 
+    def start_game(self):
+        self.timer.activate()
+        self.rand_spell()
+
     def run(self):
         while True:
             self.window.blit(self.screen, (0, 0))
@@ -138,34 +143,49 @@ class Main:
             self.timer.update()
             self.timer_text = self.get_font(30).render(f'{self.timer.current_time()}', True, (0, 255, 0))
             self.window.blit(self.timer_text, self.timer_text.get_rect())
-            draw.circle(self.screen, (0, 0, 0), (500, 400), 35)  # right
-            draw.circle(self.screen, (0, 0, 0), (600, 400), 35)  # mid
-            draw.circle(self.screen, (0, 0, 0), (700, 400), 35)  # left
 
-            self.screen.blit(self.quas, (355, 455))
-            self.screen.blit(self.wex, (455, 455))
-            self.screen.blit(self.exort, (555, 455))
-            self.screen.blit(self.invok, (939, 455))
+            draw.circle(self.screen, (0, 0, 0), (400, 400), 35)  # right
+            draw.circle(self.screen, (0, 0, 0), (500, 400), 35)  # mid
+            draw.circle(self.screen, (0, 0, 0), (600, 400), 35)  # left
+            draw.rect(self.screen, (0, 0, 0), (200, 50, 600, 100))
+            # draw.line(self.screen, (255, 0, 0), (500, 0), (500, 500))
 
+            self.screen.blit(self.quas, (100, 550))
+            self.screen.blit(self.wex, (225, 550))
+            self.screen.blit(self.exort, (350, 550))
+            self.screen.blit(self.invok, (800, 550))
+
+            self.screen.blit(self.cube, (300, 200))
+            self.screen.blit(self.cube, (600, 200))
             if self.x:
-                self.screen.blit(self.x, (450, 200))  # top
-                self.screen.blit(self.cube, (650, 200))
-            else:
-                self.screen.blit(self.cube, (450, 200))
-                self.screen.blit(self.cube, (650, 200))
-            self.screen.blit(self.cube, (670, 450))
-            self.screen.blit(self.cube, (800, 450))
+                self.screen.blit(self.x, (300, 200))  # top left
+            if self.repeat_spell:
+                self.screen.blit(self.repeat_spell[0], (600, 200))  # top right
+
+            self.screen.blit(self.cube, (500, 550))
+            self.screen.blit(self.cube, (650, 550))
             if self.spell:
-                self.screen.blit(self.spell, (670, 450))
+                self.screen.blit(self.spell, (500, 550))
             if self.last_spell:
-                self.screen.blit(self.last_spell, (800, 450))
+                self.screen.blit(self.last_spell, (650, 550))
 
             if self.sr1:
-                self.screen.blit(self.sr1, (460, 360))
+                self.screen.blit(self.sr1, (360, 360))
             if self.sr2:
-                self.screen.blit(self.sr2, (560, 360))
+                self.screen.blit(self.sr2, (460, 360))
             if self.sr3:
-                self.screen.blit(self.sr3, (660, 360))
+                self.screen.blit(self.sr3, (560, 360))
+
+            if len(self.repeat_spell) > 4:
+                self.screen.blit(self.repeat_spell[4], (700, 50))
+            if len(self.repeat_spell) > 3:
+                self.screen.blit(self.repeat_spell[3], (575, 50))
+            if len(self.repeat_spell) > 2:
+                self.screen.blit(self.repeat_spell[2], (450, 50))
+            if len(self.repeat_spell) > 1:
+                self.screen.blit(self.repeat_spell[1], (325, 50))
+            if len(self.repeat_spell) > 0:
+                self.screen.blit(self.repeat_spell[0], (200, 50))
 
             display.update()
 
@@ -181,7 +201,7 @@ class Main:
                         self.sr2 = self.sr3
                         self.sr3 = self.quas_r
                         if not self.timer.active:
-                            self.timer.activate()
+                            self.start_game()
 
                     if ev.key == K_w:
                         self.cast[0] = self.cast[1]
@@ -191,7 +211,7 @@ class Main:
                         self.sr2 = self.sr3
                         self.sr3 = self.wex_r
                         if not self.timer.active:
-                            self.timer.activate()
+                            self.start_game()
 
                     if ev.key == K_e:
                         self.cast[0] = self.cast[1]
@@ -201,7 +221,7 @@ class Main:
                         self.sr2 = self.sr3
                         self.sr3 = self.exort_r
                         if not self.timer.active:
-                            self.timer.activate()
+                            self.start_game()
 
                     if ev.key == K_r:
                         sp = self.spells()
@@ -210,9 +230,15 @@ class Main:
 
                     if ev.key == K_d:
                         self.x = self.spell
+                        if self.x == self.repeat_spell[0]:
+                            if len(self.repeat_spell) > 1:
+                                self.repeat_spell.remove(self.repeat_spell[0])
 
                     if ev.key == K_f:
                         self.x = self.last_spell
+                        if self.x == self.repeat_spell[0]:
+                            if len(self.repeat_spell) > 1:
+                                self.repeat_spell.remove(self.repeat_spell[0])
 
 
 if __name__ == '__main__':
